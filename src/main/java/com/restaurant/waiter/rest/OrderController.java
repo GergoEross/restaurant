@@ -5,6 +5,7 @@ import com.restaurant.waiter.datamodel.Order;
 import com.restaurant.waiter.datamodel.Status;
 import com.restaurant.waiter.dto.InformDTO;
 import com.restaurant.waiter.dto.ModifyDTO;
+import com.restaurant.waiter.dto.PayDTO;
 import com.restaurant.waiter.dto.SaveDTO;
 import com.restaurant.waiter.mapper.Mapper;
 import com.restaurant.waiter.store.OrderRepository;
@@ -40,6 +41,7 @@ public class OrderController {
         service.save(order);
     }
     //vendég tájékosztatása
+    @Operation(summary = "Vendég tájékoztatása")
     @GetMapping(path = "/{tableID}")
     public List<InformDTO> informGuest(@Parameter(description = "Asztal ID") @PathVariable(name = "tableID") long tableID){
         List<Order> orders = service.findByTableId(tableID);
@@ -64,12 +66,21 @@ public class OrderController {
     //étel kihozás
     @Operation(summary = "Étel kihozása")
     @PatchMapping(path = "/{id}")
-    public void serving(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long ID){
-        Order order = service.findById(ID).get();
+    public void serving(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID){
+        Order order = service.findById(pID).get();
+
+        order.setStatus(Status.BROUGHT_OUT);
+
+        service.save(order);
+    }
+    //fizetés
+    @Operation(summary = "Fizetés")
+    @PostMapping(path = "/pay")
+    public void pay(@Parameter(description = "Fizetes") @RequestBody(required = true) PayDTO pData){
+        Order order = service.finbByTableIdAndGroup(pData.getTableID(), pData.getGroup());
 
         order.setStatus(Status.COMPLETED);
 
         service.save(order);
     }
-    //fizetés
 }

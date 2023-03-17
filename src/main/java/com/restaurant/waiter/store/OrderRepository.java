@@ -16,13 +16,14 @@ public interface OrderRepository  extends CrudRepository<Order, Long> {
 
     /**
      * Rendelés(ek) asztal alapján
-     * @param tableID
+     * @param ptableID
      * @return rendelések listája
      */
-    public List<Order> findByTableId(long tableID);
+    public List<Order> findByTableId(long ptableID);
+    public Order finbByTableIdAndGroup(long ptableID, String pgroup);
 
     @Override
-    Optional<Order> findById(Long aLong);
+    Optional<Order> findById(Long pLong);
     /**
      * Új rendelés
      * @param pOrder az új rendelés
