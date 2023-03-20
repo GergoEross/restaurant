@@ -44,7 +44,7 @@ public class OrderController {
     @Operation(summary = "Vendég tájékoztatása")
     @GetMapping(path = "/{tableID}")
     public List<InformDTO> informGuest(@Parameter(description = "Asztal ID") @PathVariable(name = "tableID") long tableID){
-        List<Order> orders = service.findByTableId(tableID);
+        List<Order> orders = service.findByTableID(tableID);
 
         List<InformDTO> informDTOS = new ArrayList<>();
         orders.forEach(order -> informDTOS.add(mapper.toInformDTO(order)));
@@ -53,7 +53,7 @@ public class OrderController {
     }
     //rendelés módosítása
     @Operation(summary = "Rendelés módosítása")
-    @PatchMapping(path = "/{id}")
+    @PatchMapping(path = "/modify/{id}")
     public void modify(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID, @Parameter(description = "Rendelés módosítás") @RequestBody ModifyDTO pModifyDTO){
         Order order = service.findById(pID).get();
 
@@ -65,7 +65,7 @@ public class OrderController {
     }
     //étel kihozás
     @Operation(summary = "Étel kihozása")
-    @PatchMapping(path = "/{id}")
+    @PatchMapping(path = "/serv/{id}")
     public void serving(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID){
         Order order = service.findById(pID).get();
 
@@ -77,7 +77,7 @@ public class OrderController {
     @Operation(summary = "Fizetés")
     @PostMapping(path = "/pay")
     public void pay(@Parameter(description = "Fizetes") @RequestBody(required = true) PayDTO pData){
-        Order order = service.finbByTableIdAndGroup(pData.getTableID(), pData.getGroup());
+        Order order = service.findByTableIDAndGroupName(pData.getTableID(), pData.getGroup());
 
         order.setStatus(Status.COMPLETED);
 

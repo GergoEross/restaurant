@@ -2,7 +2,6 @@ package com.restaurant.waiter.mapper;
 
 import com.restaurant.waiter.datamodel.Order;
 import com.restaurant.waiter.dto.InformDTO;
-import com.restaurant.waiter.dto.ModifyDTO;
 import com.restaurant.waiter.dto.SaveDTO;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +14,7 @@ public class Mapper {
         saveDTO.setTableID(pOrder.getTableID());
         saveDTO.setMenuID(pOrder.getMenuID());
         saveDTO.setDescription(pOrder.getDescription());
-        saveDTO.setGroup(pOrder.getGroup());
+        saveDTO.setGroup(pOrder.getGroupName());
         saveDTO.setPcs(pOrder.getPcs());
 
         return saveDTO;
@@ -25,13 +24,13 @@ public class Mapper {
         order.setTableID(pSaveDTO.getTableID());
         order.setMenuID(pSaveDTO.getMenuID());
         order.setDescription(pSaveDTO.getDescription());
-        order.setGroup(pSaveDTO.getGroup());
+        order.setGroupName(pSaveDTO.getGroup());
         order.setPcs(pSaveDTO.getPcs());
 
         return order;
     }
    public InformDTO toInformDTO(Order pOrder){
-       InformDTO informDTO = new InformDTO(pOrder.getID(), pOrder.getGroup(), pOrder.getMenuID(), pOrder.getDescription(), pOrder.getPcs(), pOrder.getStatus(), pOrder.getUnitPrice(), pOrder.getSum());
+       InformDTO informDTO = new InformDTO(pOrder.getID(), pOrder.getGroupName(), pOrder.getMenuID(), pOrder.getDescription(), pOrder.getPcs(), pOrder.getStatus(), pOrder.getUnitPrice(), pOrder.getSum());
 
        return  informDTO;
    }

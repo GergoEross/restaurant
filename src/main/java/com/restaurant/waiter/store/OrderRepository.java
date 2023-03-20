@@ -19,23 +19,6 @@ public interface OrderRepository  extends CrudRepository<Order, Long> {
      * @param ptableID
      * @return rendelések listája
      */
-    public List<Order> findByTableId(long ptableID);
-    public Order finbByTableIdAndGroup(long ptableID, String pgroup);
-
-    @Override
-    Optional<Order> findById(Long pLong);
-    /**
-     * Új rendelés
-     * @param pOrder az új rendelés
-     * @return rendelés
-     */
-    @Override
-    public Order save(Order pOrder);
-
-    /**
-     * Rendelés törlése
-     * @param pOrder
-     */
-    @Override
-    public void delete(Order pOrder);
+    public List<Order> findByTableID(long ptableID);
+    public Order findByTableIDAndGroupName(long ptableID, String pgroupName);
 }

@@ -24,6 +24,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Schema(description = "Rendelés")
 @Entity
+@Table(name = "order")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Order {
     @Id
@@ -34,10 +35,11 @@ public class Order {
     @Schema(description = "Asztal ID")
     private long tableID;
     @Schema(description = "Csoport neve")
+    @Column(name = "group_name")
     @NotBlank(message = "error.order.group.notset")
     @NotNull(message = "error.order.group.notset")
     @Size(max = 42, min = 3, message = "error.order.group.long")
-    private String group;
+    private String groupName;
     @Column(name = "menu_id")
     @Schema(description = "Menü ID")
     private long menuID;
@@ -72,10 +74,10 @@ public class Order {
     private Timestamp modifiedTimeStamp;
 
     @Builder
-    public Order(long ID, long tableID, String group, long menuID, String menuName, String description, byte pcs, Status status, String place, double unitPrice, double sum, Timestamp createdTimeStamp, Timestamp modifiedTimeStamp) {
+    public Order(long ID, long tableID, String groupName, long menuID, String menuName, String description, byte pcs, Status status, String place, double unitPrice, double sum, Timestamp createdTimeStamp, Timestamp modifiedTimeStamp) {
         this.ID = ID;
         this.tableID = tableID;
-        this.group = group;
+        this.groupName = groupName;
         this.menuID = menuID;
         this.menuName = menuName;
         this.description = description;
