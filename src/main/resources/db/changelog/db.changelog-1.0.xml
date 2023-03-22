@@ -3,8 +3,8 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="1" author="Eross">
-        <createTable tableName="order">
+    <changeSet id="create-table-from-object" author="eross">
+        <createTable tableName="orderTable">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -20,7 +20,7 @@
             <column name="menu_name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="VARCHAR(255)">
+            <column name="order_desc" type="VARCHAR(255)">
                 <constraints nullable="true"/>
             </column>
             <column name="pcs" type="TINYINT">
@@ -45,6 +45,39 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet id="init-data" author="eross">
+        <insert tableName="orderTable">
+            <column name="id" value="1"></column>
+            <column name="table_id" value="1"></column>
+            <column name="group_name" value="GRO1"></column>
+            <column name="menu_id" value="2"></column>
+            <column name="menu_name" value="M2"></column>
+            <column name="order_desc" value="asd"></column>
+            <column name="pcs" value="1"></column>
+            <column name="status" value="IN_PROGRESS"></column>
+            <column name="place" value="PLA1"></column>
+            <column name="unit_price" value="7.25"></column>
+            <column name="sum" value="7.25"></column>
+            <column name="created_time_stamp" value="2023-03-01 12:00:23"></column>
+            <column name="modified_time_stamp" value="2023-03-01 12:00:23"></column>
+        </insert>
+        <insert tableName="orderTable">
+            <column name="id" value="2"></column>
+            <column name="table_id" value="3"></column>
+            <column name="group_name" value="GRO2"></column>
+            <column name="menu_id" value="1"></column>
+            <column name="menu_name" value="M1"></column>
+            <column name="order_desc" value="asdasd"></column>
+            <column name="pcs" value="2"></column>
+            <column name="status" value="BROUGHT_OUT"></column>
+            <column name="place" value="PLA3"></column>
+            <column name="unit_price" value="8"></column>
+            <column name="sum" value="16"></column>
+            <column name="created_time_stamp" value="2023-03-06 13:11:48"></column>
+            <column name="modified_time_stamp" value="2023-03-06 13:13:12"></column>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>

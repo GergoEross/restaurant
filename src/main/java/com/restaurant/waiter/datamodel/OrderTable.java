@@ -24,11 +24,11 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Schema(description = "Rendelés")
 @Entity
-@Table(name = "order")
+//@Table(name = "orderTable")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Order {
+public class OrderTable {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private long ID;
     @Column(name = "table_id")
@@ -37,7 +37,6 @@ public class Order {
     @Schema(description = "Csoport neve")
     @Column(name = "group_name")
     @NotBlank(message = "error.order.group.notset")
-    @NotNull(message = "error.order.group.notset")
     @Size(max = 42, min = 3, message = "error.order.group.long")
     private String groupName;
     @Column(name = "menu_id")
@@ -46,6 +45,7 @@ public class Order {
     @Column(name = "menu_name")
     @Schema(description = "Menü név")
     private String menuName;
+    @Column(name = "order_desc")
     @Schema(description = "Leírás")
     private String description;
     @Schema(description = "Mennyiség")
@@ -59,10 +59,10 @@ public class Order {
     private String place;
     @Column(name = "unit_price")
     @Schema(description = "Egységár")
-    @Min(value = 10)
+    @Min(value = 7)
     private double unitPrice;
     @Schema(description = "Összeg")
-    @Min(value = 10)
+    @Min(value = 7)
     private double sum;
     @Column(name = "created_time_stamp")
     @Schema(description = "Létrehozás időbélyege")
@@ -74,8 +74,7 @@ public class Order {
     private Timestamp modifiedTimeStamp;
 
     @Builder
-    public Order(long ID, long tableID, String groupName, long menuID, String menuName, String description, byte pcs, Status status, String place, double unitPrice, double sum, Timestamp createdTimeStamp, Timestamp modifiedTimeStamp) {
-        this.ID = ID;
+    public OrderTable(long tableID, String groupName, long menuID, String menuName, String description, byte pcs, Status status, String place, double unitPrice, double sum) {
         this.tableID = tableID;
         this.groupName = groupName;
         this.menuID = menuID;
@@ -86,7 +85,5 @@ public class Order {
         this.place = place;
         this.unitPrice = unitPrice;
         this.sum = sum;
-        this.createdTimeStamp = createdTimeStamp;
-        this.modifiedTimeStamp = modifiedTimeStamp;
     }
 }
