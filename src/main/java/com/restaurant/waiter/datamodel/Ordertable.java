@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
@@ -24,9 +23,9 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Schema(description = "Rendelés")
 @Entity
-//@Table(name = "orderTable")
+@Table(name = "ordertable")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class OrderTable {
+public class Ordertable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -74,7 +73,7 @@ public class OrderTable {
     private Timestamp modifiedTimeStamp;
 
     @Builder
-    public OrderTable(long tableID, String groupName, long menuID, String menuName, String description, byte pcs, Status status, String place, double unitPrice, double sum) {
+    public Ordertable(long tableID, String groupName, long menuID, String menuName, String description, byte pcs, Status status, String place, double unitPrice, double sum) {
         this.tableID = tableID;
         this.groupName = groupName;
         this.menuID = menuID;

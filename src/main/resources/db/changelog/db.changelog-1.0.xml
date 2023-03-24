@@ -4,7 +4,7 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
     <changeSet id="create-table-from-object" author="eross">
-        <createTable tableName="orderTable">
+        <createTable tableName="ordertable">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -48,8 +48,7 @@
     </changeSet>
 
     <changeSet id="init-data" author="eross">
-        <insert tableName="orderTable">
-            <column name="id" value="1"></column>
+        <insert tableName="ordertable">
             <column name="table_id" value="1"></column>
             <column name="group_name" value="GRO1"></column>
             <column name="menu_id" value="2"></column>
@@ -63,8 +62,7 @@
             <column name="created_time_stamp" value="2023-03-01 12:00:23"></column>
             <column name="modified_time_stamp" value="2023-03-01 12:00:23"></column>
         </insert>
-        <insert tableName="orderTable">
-            <column name="id" value="2"></column>
+        <insert tableName="ordertable">
             <column name="table_id" value="3"></column>
             <column name="group_name" value="GRO2"></column>
             <column name="menu_id" value="1"></column>

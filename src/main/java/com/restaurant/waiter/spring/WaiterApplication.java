@@ -13,8 +13,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-//@EnableWebMvc
-//@EnableAutoConfiguration
+@EnableWebMvc
+@EnableAutoConfiguration
 @ComponentScan(basePackages = "com.restaurant.waiter")
 @EnableJpaRepositories("com.restaurant.waiter.store")
 @EntityScan("com.restaurant.waiter.datamodel")

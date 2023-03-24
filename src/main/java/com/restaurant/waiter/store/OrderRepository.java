@@ -1,6 +1,6 @@
 package com.restaurant.waiter.store;
 
-import com.restaurant.waiter.datamodel.OrderTable;
+import com.restaurant.waiter.datamodel.Ordertable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,13 +11,13 @@ import java.util.List;
  */
 
 @Repository
-public interface OrderRepository  extends CrudRepository<OrderTable, Long> {
+public interface OrderRepository  extends CrudRepository<Ordertable, Long> {
 
     /**
      * Rendelés(ek) asztal alapján
      * @param ptableID
      * @return rendelések listája
      */
-    public List<OrderTable> findByTableID(long ptableID);
-    public OrderTable findByTableIDAndGroupName(long ptableID, String pgroupName);
+    public List<Ordertable> findByTableID(long ptableID);
+    public Ordertable findByTableIDAndGroupName(long ptableID, String pgroupName);
 }

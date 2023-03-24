@@ -1,7 +1,7 @@
 package com.restaurant.waiter.rest;
 
 
-import com.restaurant.waiter.datamodel.OrderTable;
+import com.restaurant.waiter.datamodel.Ordertable;
 import com.restaurant.waiter.datamodel.Status;
 import com.restaurant.waiter.dto.InformDTO;
 import com.restaurant.waiter.dto.ModifyDTO;
@@ -34,10 +34,10 @@ public class OrderController {
     @Autowired
     private Mapper mapper;
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<OrderTable> getAll(){
-        Iterable<OrderTable> orders = service.findAll();
+    public List<Ordertable> getAll(){
+        Iterable<Ordertable> orders = service.findAll();
 
-        return (List<OrderTable>) orders;
+        return (List<Ordertable>) orders;
     }
 
     @ApiResponses(value = {
@@ -47,7 +47,7 @@ public class OrderController {
     @Operation(summary = "Rendelés felvétel")
     @PostMapping(path = "/save")
     public void save(@Parameter(description = "Rendelés", required = true) @RequestBody(required = true) SaveDTO pData) throws Exception{
-        OrderTable orderTable = mapper.toEntityFromSaveDTO(pData);
+        Ordertable orderTable = mapper.toEntityFromSaveDTO(pData);
         service.save(orderTable);
     }
     @ApiResponses(value = {
@@ -59,10 +59,10 @@ public class OrderController {
     @Operation(summary = "Vendég tájékoztatása")
     @GetMapping(path = "/inform/{tableID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<InformDTO> informGuest(@Parameter(description = "Asztal ID") @PathVariable(name = "tableID") long tableID){
-        List<OrderTable> orderTables = service.findByTableID(tableID);
+        List<Ordertable> ordertables = service.findByTableID(tableID);
 
         List<InformDTO> informDTOS = new ArrayList<>();
-        orderTables.forEach(orderTable -> informDTOS.add(mapper.toInformDTO(orderTable)));
+        ordertables.forEach(ordertable -> informDTOS.add(mapper.toInformDTO(ordertable)));
 
         return informDTOS;
     }
@@ -73,7 +73,7 @@ public class OrderController {
     @Operation(summary = "Rendelés módosítása")
     @PatchMapping(path = "/modify/{id}")
     public void modify(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID, @Parameter(description = "Rendelés módosítás") @RequestBody ModifyDTO pModifyDTO){
-        OrderTable orderTable = service.findById(pID).get();
+        Ordertable orderTable = service.findById(pID).get();
 
         orderTable.setMenuID(pModifyDTO.getMenuID());
         orderTable.setDescription(pModifyDTO.getDescription());
@@ -89,7 +89,7 @@ public class OrderController {
     @Operation(summary = "Étel kihozása")
     @PatchMapping(path = "/serv/{id}")
     public void serving(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID){
-        OrderTable orderTable = service.findById(pID).get();
+        Ordertable orderTable = service.findById(pID).get();
 
         orderTable.setStatus(Status.BROUGHT_OUT);
 
@@ -102,7 +102,7 @@ public class OrderController {
     @Operation(summary = "Fizetés")
     @PostMapping(path = "/pay")
     public void pay(@Parameter(description = "Fizetes") @RequestBody(required = true) PayDTO pData){
-        OrderTable orderTable = service.findByTableIDAndGroupName(pData.getTableID(), pData.getGroup());
+        Ordertable orderTable = service.findByTableIDAndGroupName(pData.getTableID(), pData.getGroup());
 
         orderTable.setStatus(Status.COMPLETED);
 
