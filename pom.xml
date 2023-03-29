@@ -126,6 +126,43 @@
 		<finalName>${project.artifactId}</finalName>
 		<plugins>
 			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>fabric8-maven-plugin</artifactId>
+				<version>4.4.1</version>
+				<configuration>
+					<images>
+						<image>
+							<name>restaurant</name>
+							<build>
+								<dockerFileDir>${project.basedir}/src/main/resources/docker/</dockerFileDir>
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+								<tags>
+									<tag>waiter-latest</tag>
+								</tags>
+								<assembly>
+									<inline>
+										<files>
+											<file>
+												<source>${project.build.directory}/waiter.jar</source>
+												<outputDirectory>./opt</outputDirectory>
+												<destName>waiter.jar</destName>
+											</file>
+										</files>
+									</inline>
+								</assembly>
+							</build>
+						</image>
+					</images>
+					<authConfig>
+						<username>user</username>
+						<password>password</password>
+					</authConfig>
+				</configuration>
+			</plugin>
+
+			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<executions>

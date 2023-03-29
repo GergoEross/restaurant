@@ -1,0 +1,19 @@
+version: '1'
+services:
+  waiter:
+    image: restaurant:waiter-latest
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: restaurant
+      POSTGRES_PASSWORD: restaurant
+    ports:
+      - 5432:5432
+    restart: on-failure
+    volumes:
+      - D:/PostgresData:/var/lib/postgresql/data
