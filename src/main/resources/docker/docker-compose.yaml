@@ -16,4 +16,4 @@ services:
       - 5432:5432
     restart: on-failure
     volumes:
-      - D:/PostgresData:/var/lib/postgresql/data
+      - C:/PostgresData:/var/lib/postgresql/data
