@@ -1,5 +1,15 @@
 package com.restaurant.waiter.spring;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.security.OAuthFlow;
+import io.swagger.v3.oas.annotations.security.OAuthFlows;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,6 +21,38 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@SecurityScheme(
+		type = SecuritySchemeType.OAUTH2,
+		name = "oauth2",
+		description = "KeyCloak restaurant",
+		flows = @OAuthFlows(
+				implicit = @OAuthFlow(authorizationUrl = "http://172.18.0.3:6080/auth/realms/restaurant/protocol/openid-connect/auth"
+						+ "?client_id=account"
+						+ "&redirect_uri=http://172.18.0.4:8080/swagger-ui/oauth2-redirect.html"
+						+ "&response_type=code"
+						+ "&scope=openid")
+		)
+)
+
+@SecurityScheme(
+		type = SecuritySchemeType.APIKEY,
+		name = "apikey",
+		paramName = "Authorization",
+		description = "KeyCloak restaurant",
+		in = SecuritySchemeIn.HEADER)
+
+
+@SecurityScheme(
+		type = SecuritySchemeType.OPENIDCONNECT,
+		name = "openid",
+		description = "KeyCloak restaurant",
+		openIdConnectUrl = "http://172.18.0.4:6080/auth/realms/restaurant/.well-known/openid-configuration"
+)
+
+@OpenAPIDefinition(
+		servers = {
+				@Server(url = "http://172.18.0.4:8080/order", description = "local dev")})
 
 @Configuration
 @EnableWebMvc

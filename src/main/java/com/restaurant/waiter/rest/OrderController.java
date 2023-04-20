@@ -16,6 +16,8 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +35,16 @@ public class OrderController {
 
     @Autowired
     private Mapper mapper;
+
+
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(
+            security = {
+                    @SecurityRequirement(name = "apikey",scopes = {"order"}),
+                    @SecurityRequirement(name = "openid",scopes = {"order"}),
+                    @SecurityRequirement(name = "oauth2",scopes = {"order"})
+            }
+    )
     public List<Ordertable> getAll(){
         Iterable<Ordertable> orders = service.findAll();
 

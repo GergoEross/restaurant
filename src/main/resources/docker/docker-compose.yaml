@@ -1,11 +1,11 @@
 version: '1'
 services:
-  waiter:
-    image: restaurant:waiter-latest
-    depends_on:
-      - db
-    ports:
-      - 8080:8080
+  #waiter:
+  #  image: restaurant:waiter-latest
+  #  depends_on:
+  #    - db
+  #  ports:
+  #    - 8080:8080
   db:
     image: postgres:latest
     environment:
@@ -17,3 +17,22 @@ services:
     restart: on-failure
     volumes:
       - D:/PostgresData:/var/lib/postgresql/data
+
+  keycloak:
+    image: jboss/keycloak:16.1.1
+    ports:
+      - 6080:8080
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=restaurant
+      - DB_VENDOR=postgres
+      - DB_USER=restaurant
+      - DB_PASSWORD=restaurant
+      - DB_ADDR=db
+      - DB_DATABASE=mydb
+      - DB_PORT=5432
+      - KEYCLOAK_IMPORT=/tmp/realm-export.json
+    volumes:
+      - ${PWD}/realm-export:/tmp
+    depends_on:
+      - db
