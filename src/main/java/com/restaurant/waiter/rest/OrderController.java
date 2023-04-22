@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +37,23 @@ public class OrderController {
     @Autowired
     private Mapper mapper;
 
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Sikeres lekérdezés",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Ordertable.class)))}),
+            @ApiResponse(responseCode = "403", description = "Nincs megfelelő jogosultságod",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Lejárt token",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "302", description = "Nincs bejelentkezve, átirányítás a login oldalra",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "500", description = "Nincsenek rendelések")
+    })
     @Operation(
             security = {
-                    @SecurityRequirement(name = "apikey",scopes = {"order"}),
-                    @SecurityRequirement(name = "openid",scopes = {"order"}),
-                    @SecurityRequirement(name = "oauth2",scopes = {"order"})
+                    @SecurityRequirement(name = "apikey",scopes = {"waiter"}),
+                    @SecurityRequirement(name = "openid",scopes = {"waiter"}),
+                    @SecurityRequirement(name = "oauth2",scopes = {"waiter"})
             }
     )
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -52,9 +65,21 @@ public class OrderController {
 
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sikeres rendelés"),
+            @ApiResponse(responseCode = "403", description = "Nincs megfelelő jogosultságod",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Lejárt token",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "302", description = "Nincs bejelentkezve, átirányítás a login oldalra",
+                    content = { @Content(mediaType = "application/json") }),
             @ApiResponse(responseCode = "500", description = "Rendelés nem lehetséges")
     })
-    @Operation(summary = "Rendelés felvétel")
+    @Operation(
+            security = {
+                    @SecurityRequirement(name = "apikey",scopes = {"waiter"}),
+                    @SecurityRequirement(name = "openid",scopes = {"waiter"}),
+                    @SecurityRequirement(name = "oauth2",scopes = {"waiter"})
+            },
+            summary = "Rendelés felvétel")
     @PostMapping(path = "/save")
     public void save(@Parameter(description = "Rendelés", required = true) @RequestBody(required = true) SaveDTO pData) throws Exception{
         Ordertable orderTable = mapper.toEntityFromSaveDTO(pData);
@@ -78,9 +103,21 @@ public class OrderController {
     }
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sikeres módosítás"),
+            @ApiResponse(responseCode = "403", description = "Nincs megfelelő jogosultságod",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Lejárt token",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "302", description = "Nincs bejelentkezve, átirányítás a login oldalra",
+                    content = { @Content(mediaType = "application/json") }),
             @ApiResponse(responseCode = "500", description = "Sikertelen módosítás")
     })
-    @Operation(summary = "Rendelés módosítása")
+    @Operation(
+            security = {
+                    @SecurityRequirement(name = "apikey",scopes = {"waiter"}),
+                    @SecurityRequirement(name = "openid",scopes = {"waiter"}),
+                    @SecurityRequirement(name = "oauth2",scopes = {"waiter"})
+            },
+            summary = "Rendelés módosítása")
     @PatchMapping(path = "/modify/{id}")
     public void modify(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID, @Parameter(description = "Rendelés módosítás") @RequestBody ModifyDTO pModifyDTO){
         Ordertable orderTable = service.findById(pID).get();
@@ -94,9 +131,21 @@ public class OrderController {
     }
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sikeres kihozás"),
+            @ApiResponse(responseCode = "403", description = "Nincs megfelelő jogosultságod",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Lejárt token",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "302", description = "Nincs bejelentkezve, átirányítás a login oldalra",
+                    content = { @Content(mediaType = "application/json") }),
             @ApiResponse(responseCode = "500", description = "Sikertelen kihozás")
     })
-    @Operation(summary = "Étel kihozása")
+    @Operation(
+            security = {
+                    @SecurityRequirement(name = "apikey",scopes = {"waiter"}),
+                    @SecurityRequirement(name = "openid",scopes = {"waiter"}),
+                    @SecurityRequirement(name = "oauth2",scopes = {"waiter"})
+            },
+            summary = "Étel kihozása")
     @PatchMapping(path = "/serv/{id}")
     public void serving(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID){
         Ordertable orderTable = service.findById(pID).get();
@@ -107,9 +156,21 @@ public class OrderController {
     }
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sikeres fizetés"),
+            @ApiResponse(responseCode = "403", description = "Nincs megfelelő jogosultságod",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "401", description = "Lejárt token",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "302", description = "Nincs bejelentkezve, átirányítás a login oldalra",
+                    content = { @Content(mediaType = "application/json") }),
             @ApiResponse(responseCode = "500", description = "Sikertelen fizetés")
     })
-    @Operation(summary = "Fizetés")
+    @Operation(
+            security = {
+                    @SecurityRequirement(name = "apikey",scopes = {"waiter"}),
+                    @SecurityRequirement(name = "openid",scopes = {"waiter"}),
+                    @SecurityRequirement(name = "oauth2",scopes = {"waiter"})
+            },
+            summary = "Fizetés")
     @PostMapping(path = "/pay")
     public void pay(@Parameter(description = "Fizetes") @RequestBody(required = true) PayDTO pData){
         Ordertable orderTable = service.findByTableIDAndGroupName(pData.getTableID(), pData.getGroup());
