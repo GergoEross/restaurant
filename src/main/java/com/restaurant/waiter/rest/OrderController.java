@@ -36,8 +36,6 @@ public class OrderController {
     @Autowired
     private Mapper mapper;
 
-
-    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(
             security = {
                     @SecurityRequirement(name = "apikey",scopes = {"order"}),
@@ -45,6 +43,7 @@ public class OrderController {
                     @SecurityRequirement(name = "oauth2",scopes = {"order"})
             }
     )
+    @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Ordertable> getAll(){
         Iterable<Ordertable> orders = service.findAll();
 
