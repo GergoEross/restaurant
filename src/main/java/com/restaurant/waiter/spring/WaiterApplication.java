@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 		name = "oauth2",
 		description = "KeyCloak restaurant",
 		flows = @OAuthFlows(
-				implicit = @OAuthFlow(authorizationUrl = "http://yokudlela.drhealth.cloud/auth/realms/yokudlela/protocol/openid-connect/auth"
+				implicit = @OAuthFlow(authorizationUrl = "https://yokudlela.drhealth.cloud/auth/realms/yokudlela/protocol/openid-connect/auth"
 						+ "?client_id=account"
 						+ "&redirect_uri=http://localhost:8080/swagger-ui/oauth2-redirect.html"
 						+ "&response_type=code"
@@ -47,7 +47,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 		type = SecuritySchemeType.OPENIDCONNECT,
 		name = "openid",
 		description = "KeyCloak restaurant",
-		openIdConnectUrl = "http://yokudlela.drhealth.cloud/auth/realms/yokudlela/.well-known/openid-configuration"
+		openIdConnectUrl = "https://yokudlela.drhealth.cloud/auth/realms/yokudlela/.well-known/openid-configuration"
 )
 
 @OpenAPIDefinition(
