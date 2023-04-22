@@ -3,9 +3,6 @@ package com.restaurant.waiter.spring;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.info.Contact;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.security.OAuthFlow;
 import io.swagger.v3.oas.annotations.security.OAuthFlows;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
@@ -27,9 +24,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 		name = "oauth2",
 		description = "KeyCloak restaurant",
 		flows = @OAuthFlows(
-				implicit = @OAuthFlow(authorizationUrl = "https://yokudlela.drhealth.cloud/auth/realms/yokudlela/protocol/openid-connect/auth"
+				implicit = @OAuthFlow(authorizationUrl = "http://172.30.48.1:6080/auth/realms/restaurant/protocol/openid-connect/auth"
 						+ "?client_id=account"
-						+ "&redirect_uri=http://localhost:8080/swagger-ui/oauth2-redirect.html"
+						+ "&redirect_uri=http://172.30.48.1:8080/swagger-ui/oauth2-redirect.html"
 						+ "&response_type=code"
 						+ "&scope=openid")
 		)
@@ -47,12 +44,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 		type = SecuritySchemeType.OPENIDCONNECT,
 		name = "openid",
 		description = "KeyCloak restaurant",
-		openIdConnectUrl = "https://yokudlela.drhealth.cloud/auth/realms/yokudlela/.well-known/openid-configuration"
+		openIdConnectUrl = "http://172.30.48.1:6080/auth/realms/restaurant/.well-known/openid-configuration"
 )
 
 @OpenAPIDefinition(
 		servers = {
-				@Server(url = "http://localhost:8080", description = "local dev")})
+				@Server(url = "http://172.30.48.1:8080", description = "local dev")})
 
 @Configuration
 @EnableWebMvc

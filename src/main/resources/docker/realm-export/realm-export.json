@@ -398,6 +398,14 @@
           "attributes": {}
         },
         {
+          "id": "82bdc482-9b8c-4308-8157-5f17b3040b8c",
+          "name": "waiter",
+          "composite": false,
+          "clientRole": true,
+          "containerId": "0140971f-09ed-4500-a103-fa65cedd7501",
+          "attributes": {}
+        },
+        {
           "id": "51633060-690c-449c-8595-ee2130f4984f",
           "name": "manage-account-links",
           "description": "${role_manage-account-links}",
@@ -486,6 +494,7 @@
       "clientAuthenticatorType": "client-secret",
       "redirectUris": [
         "http://localhost:8080/*",
+        "http://172.30.48.1:8080/*",
         "/realms/restaurant/account/*"
       ],
       "webOrigins": [
