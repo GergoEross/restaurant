@@ -24,9 +24,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 		name = "oauth2",
 		description = "KeyCloak restaurant",
 		flows = @OAuthFlows(
-				implicit = @OAuthFlow(authorizationUrl = "http://172.30.48.1:6080/auth/realms/restaurant/protocol/openid-connect/auth"
+				implicit = @OAuthFlow(authorizationUrl = "http://restaurant:6080/auth/realms/restaurant/protocol/openid-connect/auth"
 						+ "?client_id=account"
-						+ "&redirect_uri=http://172.30.48.1:8080/swagger-ui/oauth2-redirect.html"
+						+ "&redirect_uri=http://restaurant:8080/swagger-ui/oauth2-redirect.html"
 						+ "&response_type=code"
 						+ "&scope=openid")
 		)
@@ -44,12 +44,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 		type = SecuritySchemeType.OPENIDCONNECT,
 		name = "openid",
 		description = "KeyCloak restaurant",
-		openIdConnectUrl = "http://172.30.48.1:6080/auth/realms/restaurant/.well-known/openid-configuration"
+		openIdConnectUrl = "http://restaurant:6080/auth/realms/restaurant/.well-known/openid-configuration"
 )
 
 @OpenAPIDefinition(
 		servers = {
-				@Server(url = "http://172.30.48.1:8080", description = "local dev")})
+				@Server(url = "http://restaurant:8080", description = "local dev")})
 
 @Configuration
 @EnableWebMvc
