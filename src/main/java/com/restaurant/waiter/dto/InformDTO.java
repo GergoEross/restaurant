@@ -1,15 +1,13 @@
 package com.restaurant.waiter.dto;
 
 import com.restaurant.waiter.datamodel.Status;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 public class InformDTO {
     private long ID;
     private String group;

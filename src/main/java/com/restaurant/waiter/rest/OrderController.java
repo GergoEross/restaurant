@@ -8,6 +8,7 @@ import com.restaurant.waiter.dto.ModifyDTO;
 import com.restaurant.waiter.dto.PayDTO;
 import com.restaurant.waiter.dto.SaveDTO;
 import com.restaurant.waiter.mapper.Mapper;
+import com.restaurant.waiter.service.BusinessException;
 import com.restaurant.waiter.store.OrderRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.security.Principal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -57,7 +59,7 @@ public class OrderController {
             }
     )
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Ordertable> getAll(){
+    public List<Ordertable> getAll() throws Exception{
         Iterable<Ordertable> orders = service.findAll();
 
         return (List<Ordertable>) orders;
@@ -93,7 +95,7 @@ public class OrderController {
     })
     @Operation(summary = "Vendég tájékoztatása")
     @GetMapping(path = "/inform/{tableID}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<InformDTO> informGuest(@Parameter(description = "Asztal ID") @PathVariable(name = "tableID") long tableID){
+    public List<InformDTO> informGuest(@Parameter(description = "Asztal ID") @PathVariable(name = "tableID") long tableID) throws Exception{
         List<Ordertable> ordertables = service.findByTableID(tableID);
 
         List<InformDTO> informDTOS = new ArrayList<>();
@@ -119,7 +121,7 @@ public class OrderController {
             },
             summary = "Rendelés módosítása")
     @PatchMapping(path = "/modify/{id}")
-    public void modify(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID, @Parameter(description = "Rendelés módosítás") @RequestBody ModifyDTO pModifyDTO){
+    public void modify(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID, @Parameter(description = "Rendelés módosítás") @RequestBody ModifyDTO pModifyDTO) throws IllegalAccessException, InvocationTargetException {
         Ordertable orderTable = service.findById(pID).get();
 
         orderTable.setMenuID(pModifyDTO.getMenuID());
@@ -149,10 +151,14 @@ public class OrderController {
     @PatchMapping(path = "/serv/{id}")
     public void serving(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID){
         Ordertable orderTable = service.findById(pID).get();
+        if(orderTable != null){
+            orderTable.setStatus(Status.BROUGHT_OUT);
 
-        orderTable.setStatus(Status.BROUGHT_OUT);
-
-        service.save(orderTable);
+            service.save(orderTable);
+        }
+        else{
+            throw new BusinessException("order.notexist");
+        }
     }
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sikeres fizetés"),
@@ -174,9 +180,12 @@ public class OrderController {
     @PostMapping(path = "/pay")
     public void pay(@Parameter(description = "Fizetes") @RequestBody(required = true) PayDTO pData){
         Ordertable orderTable = service.findByTableIDAndGroupName(pData.getTableID(), pData.getGroup());
-
-        orderTable.setStatus(Status.COMPLETED);
-
-        service.save(orderTable);
+        if(orderTable != null){
+            orderTable.setStatus(Status.COMPLETED);
+            service.save(orderTable);
+        }
+        else{
+            throw new BusinessException("order.notexist");
+        }
     }
 }

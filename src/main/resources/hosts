@@ -19,28 +19,8 @@
 # localhost name resolution is handled within DNS itself.
 #	127.0.0.1       localhost
 #	::1             localhost
-109.94.209.70      fitgirlrepacks.in               # Fake FitGirl site
-109.94.209.70      www.fitgirlrepacks.in           # Fake FitGirl site
-109.94.209.70      fitgirlrepacks.co               # Fake FitGirl site
-109.94.209.70      fitgirl-repacks.cc              # Fake FitGirl site
-109.94.209.70      fitgirl-repacks.to              # Fake FitGirl site
-109.94.209.70      fitgirl-repack.com              # Fake FitGirl site
-109.94.209.70      fitgirl-repacks.website         # Fake FitGirl site
-109.94.209.70      fitgirlrepack.games             # Fake FitGirl site
-109.94.209.70      www.fitgirlrepacks.co           # Fake FitGirl site
-109.94.209.70      www.fitgirl-repacks.cc          # Fake FitGirl site
-109.94.209.70      www.fitgirl-repacks.to          # Fake FitGirl site
-109.94.209.70      www.fitgirl-repack.com          # Fake FitGirl site
-109.94.209.70      www.fitgirl-repacks.website     # Fake FitGirl site
-109.94.209.70      ww9.fitgirl-repacks.xyz         # Fake FitGirl site
-109.94.209.70      www.fitgirlrepack.games         # Fake FitGirl site
-109.94.209.70      *.fitgirl-repacks.xyz           # Fake FitGirl site
-109.94.209.70      fitgirl-repacks.xyz             # Fake FitGirl site
-109.94.209.70      fitgirl-repack.net              # Fake FitGirl site
-109.94.209.70      www.fitgirl-repack.net          # Fake FitGirl site
-109.94.209.70      fitgirlpack.site                # Fake FitGirl site
-109.94.209.70      www.fitgirlpack.site            # Fake FitGirl site
-172.30.48.1 restaurant
+
+192.168.96.1 restaurant
 # Added by Docker Desktop
 192.168.1.64 host.docker.internal
 192.168.1.64 gateway.docker.internal
