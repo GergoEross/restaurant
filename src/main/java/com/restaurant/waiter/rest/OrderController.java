@@ -21,8 +21,11 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import java.lang.reflect.InvocationTargetException;
 import java.security.Principal;
 import java.sql.Timestamp;
@@ -31,6 +34,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/order")
+@Validated
 public class OrderController {
 
     @Autowired
@@ -59,8 +63,11 @@ public class OrderController {
             }
     )
     @GetMapping(path = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Ordertable> getAll() throws Exception{
+    public List<Ordertable> getAll() throws Exception, BusinessException{
         Iterable<Ordertable> orders = service.findAll();
+        if(((List<Ordertable>)orders).isEmpty()){
+            throw new BusinessException("order.notexist");
+        }
 
         return (List<Ordertable>) orders;
     }
@@ -83,7 +90,7 @@ public class OrderController {
             },
             summary = "Rendelés felvétel")
     @PostMapping(path = "/save")
-    public void save(@Parameter(description = "Rendelés", required = true) @RequestBody(required = true) SaveDTO pData) throws Exception{
+    public void save(@Valid @Parameter(description = "Rendelés", required = true) @RequestBody(required = true) SaveDTO pData) throws Exception{
         Ordertable orderTable = mapper.toEntityFromSaveDTO(pData);
         service.save(orderTable);
     }
@@ -95,8 +102,11 @@ public class OrderController {
     })
     @Operation(summary = "Vendég tájékoztatása")
     @GetMapping(path = "/inform/{tableID}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<InformDTO> informGuest(@Parameter(description = "Asztal ID") @PathVariable(name = "tableID") long tableID) throws Exception{
+    public List<InformDTO> informGuest(@Parameter(description = "Asztal ID") @PathVariable(name = "tableID") @Positive long tableID) throws Exception, BusinessException{
         List<Ordertable> ordertables = service.findByTableID(tableID);
+        if(ordertables.isEmpty()){
+            throw new BusinessException("table.notexist");
+        }
 
         List<InformDTO> informDTOS = new ArrayList<>();
         ordertables.forEach(ordertable -> informDTOS.add(mapper.toInformDTO(ordertable)));
@@ -121,9 +131,12 @@ public class OrderController {
             },
             summary = "Rendelés módosítása")
     @PatchMapping(path = "/modify/{id}")
-    public void modify(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID, @Parameter(description = "Rendelés módosítás") @RequestBody ModifyDTO pModifyDTO) throws IllegalAccessException, InvocationTargetException {
-        Ordertable orderTable = service.findById(pID).get();
-
+    public void modify(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") @Positive long pID, @Valid @Parameter(description = "Rendelés módosítás") @RequestBody ModifyDTO pModifyDTO) throws IllegalAccessException, InvocationTargetException, BusinessException {
+        var raw = service.findById(pID);
+        if(!raw.isPresent()){
+            throw new BusinessException("order.notexist");
+        }
+        Ordertable orderTable = raw.get();
         orderTable.setMenuID(pModifyDTO.getMenuID());
         orderTable.setDescription(pModifyDTO.getDescription());
         orderTable.setPcs(pModifyDTO.getPcs());
@@ -149,12 +162,13 @@ public class OrderController {
             },
             summary = "Étel kihozása")
     @PatchMapping(path = "/serv/{id}")
-    public void serving(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") long pID){
-        Ordertable orderTable = service.findById(pID).get();
-        if(orderTable != null){
-            orderTable.setStatus(Status.BROUGHT_OUT);
+    public void serving(@Parameter(description = "Rendelés ID") @PathVariable(name = "id") @Positive long pID) throws BusinessException{
+        var orderTable = service.findById(pID);
+        if(orderTable.isPresent()){
+            Ordertable res = orderTable.get();
+            res.setStatus(Status.BROUGHT_OUT);
 
-            service.save(orderTable);
+            service.save(res);
         }
         else{
             throw new BusinessException("order.notexist");
@@ -178,7 +192,7 @@ public class OrderController {
             },
             summary = "Fizetés")
     @PostMapping(path = "/pay")
-    public void pay(@Parameter(description = "Fizetes") @RequestBody(required = true) PayDTO pData){
+    public void pay(@Parameter(description = "Fizetes") @RequestBody(required = true) PayDTO pData) throws BusinessException{
         Ordertable orderTable = service.findByTableIDAndGroupName(pData.getTableID(), pData.getGroup());
         if(orderTable != null){
             orderTable.setStatus(Status.COMPLETED);
